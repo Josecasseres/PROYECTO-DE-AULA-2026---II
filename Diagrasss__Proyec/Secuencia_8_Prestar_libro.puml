@@ -1,0 +1,46 @@
+@startuml
+skinparam shadowing false
+skinparam defaultFontName "DejaVu Sans"
+skinparam ArrowColor #5E35B1
+skinparam roundCorner 14
+skinparam ActivityBackgroundColor #EDE7F6
+skinparam ActivityBorderColor #7E57C2
+skinparam ActivityDiamondBackgroundColor #FFF3C4
+skinparam ActivityDiamondBorderColor #C9A227
+skinparam ActivityStartColor #5E35B1
+skinparam ActivityEndColor #5E35B1
+skinparam SequenceLifeLineBorderColor #7E57C2
+skinparam ParticipantBackgroundColor #EDE7F6
+skinparam ParticipantBorderColor #7E57C2
+skinparam ActorBackgroundColor #EDE7F6
+skinparam DatabaseBackgroundColor #FFF3C4
+skinparam StateBackgroundColor #EDE7F6
+skinparam StateBorderColor #7E57C2
+skinparam ComponentBackgroundColor #EDE7F6
+skinparam ComponentBorderColor #7E57C2
+skinparam NodeBackgroundColor #F6F2FC
+skinparam NodeBorderColor #7E57C2
+skinparam ClassBackgroundColor #EDE7F6
+skinparam ClassBorderColor #7E57C2
+title Diagrama de secuencia – Prestar libro
+actor Administrador
+participant VentanaPrincipal as VP
+participant LibroDAO as DAO
+participant "Pila<Prestamo>" as P
+database MySQL as DB
+Administrador -> VP : selecciona libro, estudiante y fecha; pulsa "Prestar"
+VP -> VP : valida selección, cantidad > 0 y fecha >= hoy
+alt validaciones correctas
+  VP -> DAO : prestarLibro(prestamo)
+  DAO -> DB : UPDATE libro SET cantidad = cantidad - 1
+  DAO -> DB : INSERT INTO prestamo
+  DB --> DAO : filas afectadas
+  DAO --> VP : true
+  VP -> DAO : obtenerUltimoIdPrestamo(codigo, isbn)
+  DAO --> VP : id
+  VP -> P : apilar(prestamo)
+  VP --> Administrador : "Libro prestado correctamente"
+else alguna validación falla
+  VP --> Administrador : mensaje de error
+end
+@enduml

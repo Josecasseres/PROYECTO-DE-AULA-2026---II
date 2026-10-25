@@ -1,0 +1,73 @@
+@startuml
+skinparam dpi 130
+skinparam shadowing false
+skinparam defaultFontName "DejaVu Sans"
+skinparam defaultFontSize 11
+skinparam ArrowFontSize 9
+skinparam ArrowFontColor #333333
+skinparam ArrowColor #222222
+skinparam circle {
+  BackgroundColor #FFE0B2
+  BorderColor #F57C00
+}
+skinparam database {
+  BackgroundColor #F8BBD0
+  BorderColor #C2185B
+}
+skinparam rectangle {
+  roundCorner 25
+}
+title Diagrama de procesos del negocio – Sistema Biblioteca SIT
+
+circle "Estudiante" as est
+circle "Bibliotecario /\nAdministrador" as bib
+database "SISTEMA\nBIBLIOTECA SIT" as sis #81D4FA
+
+rectangle "1. Préstamo\nde libros" as p1 #C8F7C5
+rectangle "2. Devolución\ny seguimiento" as p2 #C8F7C5
+rectangle "3. Gestión del\ncatálogo" as p3 #C8F7C5
+rectangle "4. Gestión de\nestudiantes" as p4 #C8F7C5
+rectangle "5. Cola de\nespera" as p5 #C8F7C5
+rectangle "6. Autenticación\ndel administrador" as p6 #C8F7C5
+
+database "BD: Libros\ny autores" as dbl
+database "BD: Estudiantes" as dbe
+database "BD: Préstamos" as dbp
+database "BD: Administrador" as dba
+database "Cola de espera\n(memoria)" as cola #E1BEE7
+database "Pila de préstamos\n(memoria)" as pila #E1BEE7
+
+rectangle "Mensaje de\nconfirmación" as d1 #FFF59D
+rectangle "Lista de libros\nemitidos" as d2 #FFF59D
+rectangle "Libros por\ndevolver hoy" as d3 #FFF59D
+
+est --> sis : Solicita / devuelve libro
+bib --> sis : Registra, busca,\npresta y recibe
+
+sis ..> p1 : Ejecuta
+sis ..> p2 : Ejecuta
+sis ..> p3 : Ejecuta
+sis ..> p4 : Ejecuta
+sis ..> p5 : Ejecuta
+sis ..> p6 : Ejecuta
+
+p1 --> dbl : Consulta /\nresta stock
+p1 --> dbe : Consulta
+p1 --> dbp : Registra préstamo
+p1 --> pila : Apila
+p1 --> d1 : Genera
+p2 --> dbp : Lee / elimina
+p2 --> dbl : Suma stock
+p2 --> pila : Desapila (deshacer)
+p2 --> d2 : Genera
+p2 --> d3 : Genera
+p3 --> dbl : Lee / escribe
+p4 --> dbe : Lee / escribe
+p5 --> cola : Encola /\ndesencola
+p6 --> dba : Valida credenciales
+
+d1 ..> bib : Entrega
+d2 ..> bib : Entrega
+d3 ..> bib : Entrega
+bib ..> est : Entrega / recibe libro
+@enduml

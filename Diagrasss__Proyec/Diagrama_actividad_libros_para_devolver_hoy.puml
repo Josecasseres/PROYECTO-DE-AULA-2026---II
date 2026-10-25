@@ -1,0 +1,38 @@
+@startuml
+skinparam dpi 150
+skinparam shadowing false
+skinparam defaultFontName "DejaVu Sans"
+skinparam defaultFontSize 12
+skinparam roundCorner 14
+skinparam ArrowColor #5E35B1
+skinparam ArrowFontColor #4527A0
+skinparam TitleFontSize 17
+skinparam TitleFontColor #4527A0
+skinparam ActivityBackgroundColor #EDE7F6
+skinparam ActivityBorderColor #7E57C2
+skinparam ActivityDiamondBackgroundColor #FFF3C4
+skinparam ActivityDiamondBorderColor #C9A227
+skinparam ActivityStartColor #5E35B1
+skinparam ActivityEndColor #5E35B1
+skinparam NoteBackgroundColor #FFF8E1
+skinparam NoteBorderColor #C9A227
+skinparam SwimlaneBorderColor #B39DDB
+skinparam SwimlaneTitleFontColor #4527A0
+skinparam SwimlaneTitleFontStyle bold
+title Diagrama de actividad – Ver libros para devolver hoy (CU-13)
+
+|Administrador|
+start
+:Pulsa "Libro para devolver hoy";
+|Sistema|
+:Solicita los préstamos cuya fecha\nde devolución es hoy;
+|Base de datos|
+:Busca los préstamos con fecha\nde devolución igual a la fecha de hoy;
+|Sistema|
+if (¿Hay préstamos que vencen hoy?) then (sí)
+  :Muestra la lista de préstamos\nen la tabla;
+else (no)
+  :Muestra "No hay libros para devolver hoy";
+endif
+stop
+@enduml

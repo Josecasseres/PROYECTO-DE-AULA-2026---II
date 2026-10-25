@@ -1,0 +1,56 @@
+@startuml
+skinparam dpi 150
+skinparam shadowing false
+skinparam defaultFontName "DejaVu Sans"
+skinparam defaultFontSize 12
+skinparam roundCorner 14
+skinparam ArrowColor #5E35B1
+skinparam ArrowFontColor #4527A0
+skinparam TitleFontSize 17
+skinparam TitleFontColor #4527A0
+skinparam ActivityBackgroundColor #EDE7F6
+skinparam ActivityBorderColor #7E57C2
+skinparam ActivityDiamondBackgroundColor #FFF3C4
+skinparam ActivityDiamondBorderColor #C9A227
+skinparam ActivityStartColor #5E35B1
+skinparam ActivityEndColor #5E35B1
+skinparam NoteBackgroundColor #FFF8E1
+skinparam NoteBorderColor #C9A227
+skinparam SwimlaneBorderColor #B39DDB
+skinparam SwimlaneTitleFontColor #4527A0
+skinparam SwimlaneTitleFontStyle bold
+title Diagrama de actividad 7 – Agregar estudiante (CU-04)
+
+|Administrador|
+start
+:Busca estudiante por código en "Prestar libro";
+|Base de datos|
+:Busca al estudiante por código;
+|Sistema|
+if (¿Existe en la BD?) then (sí)
+  :Muestra al estudiante en la tabla;
+  stop
+else (no)
+  :Muestra "No se encontraron registros";
+  :Abre el diálogo "Agregar estudiante";
+endif
+|Administrador|
+:Escribe código y nombre y pulsa "Agregar";
+|Sistema|
+if (¿Datos completos?) then (no)
+  :Muestra un mensaje de error;
+  stop
+endif
+|Base de datos|
+if (¿Código ya existe?) then (sí)
+  |Sistema|
+  :Muestra un mensaje de error por código duplicado;
+  stop
+else (no)
+  :Inserta el estudiante en la base de datos;
+  |Sistema|
+  :Cierra el diálogo;
+  :Deja el código en la caja de búsqueda;
+endif
+stop
+@enduml

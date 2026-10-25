@@ -1,0 +1,48 @@
+@startuml
+skinparam dpi 150
+skinparam shadowing false
+skinparam defaultFontName "DejaVu Sans"
+skinparam defaultFontSize 12
+skinparam roundCorner 14
+skinparam ArrowColor #5E35B1
+skinparam ArrowFontColor #4527A0
+skinparam TitleFontSize 17
+skinparam TitleFontColor #4527A0
+skinparam ActivityBackgroundColor #EDE7F6
+skinparam ActivityBorderColor #7E57C2
+skinparam ActivityDiamondBackgroundColor #FFF3C4
+skinparam ActivityDiamondBorderColor #C9A227
+skinparam ActivityStartColor #5E35B1
+skinparam ActivityEndColor #5E35B1
+skinparam NoteBackgroundColor #FFF8E1
+skinparam NoteBorderColor #C9A227
+skinparam SwimlaneBorderColor #B39DDB
+skinparam SwimlaneTitleFontColor #4527A0
+skinparam SwimlaneTitleFontStyle bold
+title Diagrama de actividad 5 – Cola de espera (CU-07)
+start
+:Presiona "Cola de espera";
+:Se abre VentanaColaEspera;
+repeat
+  switch (¿Qué desea hacer?)
+  case (Agregar a la cola)
+    :Escribe código y nombre;
+    if (¿Datos completos?) then (sí)
+      :Encola al estudiante (al final);
+      :Actualiza la lista y el total;
+    else (no)
+      :Pide completar los datos;
+    endif
+  case (Atender siguiente)
+    if (¿Cola vacía?) then (sí)
+      :Muestra "No hay estudiantes esperando";
+    else (no)
+      :Desencola al primero (frente);
+      :Muestra su nombre y código;
+      :Actualiza la lista;
+    endif
+  endswitch
+repeat while (¿Seguir en la ventana?) is (sí) not (no)
+:Cierra la ventana;
+stop
+@enduml

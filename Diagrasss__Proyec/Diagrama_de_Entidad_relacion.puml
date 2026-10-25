@@ -1,0 +1,62 @@
+@startuml
+skinparam shadowing false
+skinparam defaultFontName "DejaVu Sans"
+skinparam ArrowColor #5E35B1
+skinparam roundCorner 14
+skinparam ActivityBackgroundColor #EDE7F6
+skinparam ActivityBorderColor #7E57C2
+skinparam ActivityDiamondBackgroundColor #FFF3C4
+skinparam ActivityDiamondBorderColor #C9A227
+skinparam ActivityStartColor #5E35B1
+skinparam ActivityEndColor #5E35B1
+skinparam SequenceLifeLineBorderColor #7E57C2
+skinparam ParticipantBackgroundColor #EDE7F6
+skinparam ParticipantBorderColor #7E57C2
+skinparam ActorBackgroundColor #EDE7F6
+skinparam DatabaseBackgroundColor #FFF3C4
+skinparam StateBackgroundColor #EDE7F6
+skinparam StateBorderColor #7E57C2
+skinparam ComponentBackgroundColor #EDE7F6
+skinparam ComponentBorderColor #7E57C2
+skinparam NodeBackgroundColor #F6F2FC
+skinparam NodeBorderColor #7E57C2
+skinparam ClassBackgroundColor #EDE7F6
+skinparam ClassBorderColor #7E57C2
+title Modelo entidad-relación – bd_biblioteca
+hide circle
+skinparam linetype ortho
+entity libro {
+  *isbn_libro : VARCHAR <<PK>>
+  --
+  titulo_libro : VARCHAR
+  categoria : VARCHAR
+  cantidad_libros : INT
+}
+entity autor {
+  nombre_autor : VARCHAR
+  correo_autor : VARCHAR
+  --
+  isbn_libro : VARCHAR <<FK>>
+}
+entity estudiante {
+  *codigo : VARCHAR <<PK>>
+  --
+  nombre : VARCHAR
+}
+entity prestamo {
+  *id_prestamo : INT <<PK, auto>>
+  --
+  codigo : VARCHAR <<FK>>
+  isbn_libro : VARCHAR <<FK>>
+  fecha_prestamo : DATE
+  fecha_devolucion : DATE
+}
+entity administrador {
+  *id_administrador : VARCHAR <<PK>>
+  --
+  contrasena : VARCHAR
+}
+libro ||--o{ autor : tiene
+libro ||--o{ prestamo : se presta en
+estudiante ||--o{ prestamo : solicita
+@enduml

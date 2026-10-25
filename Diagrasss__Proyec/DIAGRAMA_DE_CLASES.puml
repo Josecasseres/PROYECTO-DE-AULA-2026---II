@@ -1,0 +1,142 @@
+@startuml
+skinparam dpi 150
+skinparam shadowing false
+skinparam defaultFontName "DejaVu Sans"
+skinparam defaultFontSize 12
+skinparam roundCorner 14
+skinparam ArrowColor #5E35B1
+skinparam ArrowFontColor #4527A0
+skinparam TitleFontSize 17
+skinparam TitleFontColor #4527A0
+skinparam ActivityBackgroundColor #EDE7F6
+skinparam ActivityBorderColor #7E57C2
+skinparam ActivityDiamondBackgroundColor #FFF3C4
+skinparam ActivityDiamondBorderColor #C9A227
+skinparam ActivityStartColor #5E35B1
+skinparam ActivityEndColor #5E35B1
+skinparam NoteBackgroundColor #FFF8E1
+skinparam NoteBorderColor #C9A227
+skinparam SwimlaneBorderColor #B39DDB
+skinparam SwimlaneTitleFontColor #4527A0
+skinparam SwimlaneTitleFontStyle bold
+skinparam usecaseBackgroundColor #EDE7F6
+skinparam usecaseBorderColor #7E57C2
+skinparam actorBorderColor #4527A0
+skinparam actorBackgroundColor #EDE7F6
+skinparam classBackgroundColor #EDE7F6
+skinparam classBorderColor #7E57C2
+skinparam packageBorderColor #B39DDB
+skinparam rectangleBackgroundColor #F6F2FC
+skinparam rectangleBorderColor #7E57C2
+skinparam componentBackgroundColor #EDE7F6
+skinparam componentBorderColor #7E57C2
+skinparam databaseBackgroundColor #FFF3C4
+skinparam databaseBorderColor #C9A227
+skinparam ArrowFontSize 11
+title Diagrama de clases – Sistema de gestión de biblioteca
+skinparam classAttributeIconSize 0
+package modelo {
+  class Libro {
+  -isbn: String
+  -titulo: String
+  -categoria: String
+  -cantidad: int
+}
+  class Autor {
+  -nombre: String
+  -correo: String
+  +isbnLibro: String
+}
+  class Estudiante {
+  +codigo: String
+  +nombre: String
+}
+  class Prestamo {
+  -id: int
+  +codigo: String
+  +fechaPrestamo: String
+  +fechaDevolucion: String
+  +isbnLibro: String
+}
+  class Administrador {
+  ~id: String
+  ~contrasena: String
+}
+}
+package estructuras {
+  class "Nodo<T>" as Nodo {
+  dato: T
+  siguiente: Nodo<T>
+}
+  class "Cola<T>" as Cola {
+  +encolar(T)
+  +desencolar(): T
+  +verFrente(): T
+  +estaVacia(): boolean
+  +getTamanio(): int
+  +aLista(): List<T>
+}
+  class "Pila<T>" as Pila {
+  +apilar(T)
+  +desapilar(): T
+  +verCima(): T
+  +estaVacia(): boolean
+  +getTamanio(): int
+  +aLista(): List<T>
+}
+}
+package bd {
+  class GestorConexionBD {
+  +obtenerConexion(): Connection
+}
+  class AdministradorDAO {
+  +esAdministradorValido(Administrador): boolean
+}
+  class LibroDAO {
+  +agregarLibro()
+  +agregarAutor()
+  +agregarEstudiante()
+  +existeEstudiante()
+  +obtenerPorTitulo/Categoria/Autor/Isbn()
+  +prestarLibro()
+  +devolverLibro()
+  +listarLibrosPrestados()
+  +obtenerLibrosPorDevolver()
+  +tienePrestamos()
+  +eliminarLibro()
+  +editarLibro()
+  +obtenerUltimoIdPrestamo()
+}
+}
+package interfaz {
+  class VentanaInicioSesion <<JFrame>>
+  class VentanaPrincipal <<JFrame>>
+  class VentanaColaEspera <<JFrame>>
+  class DialogoAgregarEstudiante <<JDialog>>
+  class PanelFondo <<JPanel>>
+  class Iconos {
+  +cargar(nombre, tamaño): ImageIcon
+}
+}
+Libro "1" -- "1..*" Autor : escrito por
+Prestamo "*" --> "1" Libro
+Prestamo "*" --> "1" Estudiante
+Cola o-- Nodo
+Pila o-- Nodo
+VentanaInicioSesion --> AdministradorDAO
+VentanaInicioSesion --> VentanaPrincipal
+VentanaInicioSesion --> PanelFondo
+VentanaPrincipal --> LibroDAO
+VentanaPrincipal --> Cola : colaEspera
+VentanaPrincipal --> Pila : pilaPrestamos
+VentanaPrincipal --> VentanaColaEspera
+VentanaPrincipal --> DialogoAgregarEstudiante
+VentanaPrincipal --> PanelFondo
+VentanaPrincipal ..> Iconos
+VentanaColaEspera --> Cola
+AdministradorDAO --> GestorConexionBD
+LibroDAO --> GestorConexionBD
+LibroDAO ..> Libro
+LibroDAO ..> Prestamo
+AdministradorDAO ..> Administrador
+@enduml

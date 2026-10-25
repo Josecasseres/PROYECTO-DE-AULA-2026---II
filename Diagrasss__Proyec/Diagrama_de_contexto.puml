@@ -1,0 +1,46 @@
+@startuml
+skinparam dpi 130
+skinparam shadowing false
+skinparam defaultFontName "DejaVu Serif"
+skinparam defaultFontSize 11
+skinparam ArrowFontSize 9
+skinparam rectangle {
+  BackgroundColor #ECEFF1
+  BorderColor #37474F
+  roundCorner 12
+}
+title Diagrama de Contexto – Sistema Biblioteca SIT
+
+usecase "<b><color:white>SISTEMA\n<b><color:white>BIBLIOTECA SIT\n<color:white>(Gestión de biblioteca)" as S #2E86C1
+
+rectangle "<b>BIBLIOTECARIO /\n<b>ADMINISTRADOR\n<color:gray>(Actor principal)" as B
+rectangle "<b>ESTUDIANTE\n<color:gray>(Usuario final)" as E
+rectangle "<b>BASE DE DATOS\n<b>MYSQL (XAMPP)\n<color:gray>(Almacenamiento)" as D #E8F5E9
+rectangle "<b>DIRECCIÓN DE LA\n<b>INSTITUCIÓN\n<color:gray>(Políticas de préstamo)" as I #FFF3E0
+rectangle "<b>DESARROLLADOR\n<color:gray>(Mantenimiento)" as V #FFF3E0
+
+B -[#37474F,thickness=2]down-> S : Autenticación, gestión de libros,\npréstamos, devoluciones y cola
+S -[#E53935,dashed,thickness=2]up-> B : Tablas de resultados, mensajes\ny libros por devolver hoy
+E -[#E53935,dashed,thickness=2]left-> B : Solicita / devuelve libro\n(atención presencial)
+B -[#E53935,dashed,thickness=2]right-> E : Entrega / recibe libro
+S -[#37474F,thickness=2]right-> D : Consultas SQL\n(INSERT, SELECT, UPDATE, DELETE)
+D -[#E53935,dashed,thickness=2]left-> S : Libros, autores, estudiantes\ny préstamos
+I -[#E53935,dashed,thickness=2]right-> S : Plazo y reglas de préstamo
+V -[#37474F,thickness=2]up-> S : Mantenimiento y mejoras
+
+legend right
+  <b>Leyenda
+  Flecha negra continua: flujo de interacción
+  Flecha roja punteada: flujo de datos
+  
+  <b>Alcance del sistema
+  • Autenticación del administrador
+  • Gestión de libros y autores
+  • Registro de estudiantes
+  • Préstamo con fecha de devolución
+  • Devolución y libros por devolver hoy
+  • Cola de espera y deshacer préstamo
+  <i>Fuera del alcance: multas, reportes
+  <i>y múltiples usuarios
+endlegend
+@enduml

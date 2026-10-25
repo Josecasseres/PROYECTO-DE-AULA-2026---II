@@ -1,0 +1,97 @@
+@startuml
+skinparam dpi 150
+skinparam shadowing false
+skinparam defaultFontName "DejaVu Sans"
+skinparam defaultFontSize 12
+skinparam roundCorner 14
+skinparam ArrowColor #5E35B1
+skinparam ArrowFontColor #4527A0
+skinparam TitleFontSize 17
+skinparam TitleFontColor #4527A0
+skinparam ActivityBackgroundColor #EDE7F6
+skinparam ActivityBorderColor #7E57C2
+skinparam ActivityDiamondBackgroundColor #FFF3C4
+skinparam ActivityDiamondBorderColor #C9A227
+skinparam ActivityStartColor #5E35B1
+skinparam ActivityEndColor #5E35B1
+skinparam NoteBackgroundColor #FFF8E1
+skinparam NoteBorderColor #C9A227
+skinparam SwimlaneBorderColor #B39DDB
+skinparam SwimlaneTitleFontColor #4527A0
+skinparam SwimlaneTitleFontStyle bold
+title Diagrama de actividad 3 – Prestar un libro (CU-05, con CU-03 y CU-04)
+
+|Administrador|
+start
+if (¿Hay estudiantes esperando\nen la cola?) then (sí)
+  :Abre "Cola de espera" y pulsa\n"Atender siguiente";
+  |Sistema|
+  :Saca de la cola al primer estudiante\ny muestra su turno (nombre y código);
+  |Administrador|
+endif
+:Entra a "Prestar libro", elige el criterio\n(título, categoría, autor o ISBN),\nescribe el texto y pulsa "Buscar";
+|Sistema|
+if (¿El texto está vacío?) then (sí)
+  :Muestra "Por favor complete los datos";
+  stop
+endif
+|Base de datos|
+:Busca los libros que coinciden;
+|Sistema|
+if (¿Hay resultados?) then (no)
+  :Muestra "No se encontraron registros";
+  stop
+else (sí)
+  :Muestra los libros en la tabla;
+endif
+|Administrador|
+:Escribe el código del estudiante\ny pulsa "Buscar" (estudiante);
+|Sistema|
+if (¿El código está vacío?) then (sí)
+  :Muestra un mensaje de error;
+  stop
+endif
+|Base de datos|
+:Busca al estudiante por su código;
+|Sistema|
+if (¿El estudiante existe?) then (no)
+  :Muestra "No se encontraron registros"\ny abre la ventana "Agregar estudiante";
+  |Administrador|
+  :Escribe el código y el nombre\ny pulsa "Agregar";
+  |Sistema|
+  if (¿Datos completos y estudiante nuevo?) then (sí)
+    |Base de datos|
+    :Inserta el estudiante;
+    |Sistema|
+    :Cierra la ventana y deja el código\nen la caja de búsqueda;
+  else (no)
+    :Muestra el error correspondiente;
+    stop
+  endif
+else (sí)
+  :Muestra al estudiante en la tabla;
+endif
+|Administrador|
+:Selecciona un libro y un estudiante,\nelige la fecha de devolución (desde hoy,\npor defecto hoy + 7 días) y pulsa "Prestar";
+|Sistema|
+if (¿Seleccionó libro y estudiante?) then (no)
+  :Muestra "Por favor, seleccione un libro\ny un estudiante de la tabla";
+  stop
+elseif (¿Quedan ejemplares del libro?) then (no)
+  :Muestra "Libro no disponible";
+  stop
+elseif (¿La fecha de devolución\nes anterior a hoy?) then (sí)
+  :Muestra "La fecha de devolución\nno puede ser anterior a hoy";
+  stop
+endif
+|Base de datos|
+:Registra al estudiante si no existe,\nresta 1 a la cantidad del libro\ne inserta el préstamo;
+|Sistema|
+if (¿Se registró el préstamo?) then (sí)
+  :Apila el préstamo en la pila\n(para poder deshacerlo);
+  :Muestra "Libro prestado correctamente"\ny limpia la tabla de libros;
+else (no)
+  :Muestra "Se produjo un error";
+endif
+stop
+@enduml

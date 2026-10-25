@@ -1,0 +1,35 @@
+@startuml
+skinparam shadowing false
+skinparam defaultFontName "DejaVu Sans"
+skinparam ArrowColor #5E35B1
+skinparam roundCorner 14
+skinparam ActivityBackgroundColor #EDE7F6
+skinparam ActivityBorderColor #7E57C2
+skinparam ActivityDiamondBackgroundColor #FFF3C4
+skinparam ActivityDiamondBorderColor #C9A227
+skinparam ActivityStartColor #5E35B1
+skinparam ActivityEndColor #5E35B1
+skinparam SequenceLifeLineBorderColor #7E57C2
+skinparam ParticipantBackgroundColor #EDE7F6
+skinparam ParticipantBorderColor #7E57C2
+skinparam ActorBackgroundColor #EDE7F6
+skinparam DatabaseBackgroundColor #FFF3C4
+skinparam StateBackgroundColor #EDE7F6
+skinparam StateBorderColor #7E57C2
+skinparam ComponentBackgroundColor #EDE7F6
+skinparam ComponentBorderColor #7E57C2
+skinparam NodeBackgroundColor #F6F2FC
+skinparam NodeBorderColor #7E57C2
+skinparam ClassBackgroundColor #EDE7F6
+skinparam ClassBorderColor #7E57C2
+title Diagrama de estados – Ciclo de vida de un préstamo
+[*] --> Disponible : libro con cantidad > 0
+Disponible --> Prestado : prestarLibro()\n(cantidad - 1)
+Prestado --> Vence_hoy : fecha_devolucion = hoy
+Prestado --> Devuelto : devolverLibro()\n(cantidad + 1)
+Vence_hoy --> Devuelto : devolverLibro()
+Prestado --> Deshecho : deshacer último préstamo\n(solo el más reciente)
+Devuelto --> [*]
+Deshecho --> [*]
+state Vence_hoy : aparece en\n"Libro para devolver hoy"
+@enduml

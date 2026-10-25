@@ -1,0 +1,53 @@
+@startuml
+skinparam dpi 150
+skinparam shadowing false
+skinparam defaultFontName "DejaVu Sans"
+skinparam defaultFontSize 12
+skinparam roundCorner 14
+skinparam ArrowColor #5E35B1
+skinparam ArrowFontColor #4527A0
+skinparam TitleFontSize 17
+skinparam TitleFontColor #4527A0
+skinparam ActivityBackgroundColor #EDE7F6
+skinparam ActivityBorderColor #7E57C2
+skinparam ActivityDiamondBackgroundColor #FFF3C4
+skinparam ActivityDiamondBorderColor #C9A227
+skinparam ActivityStartColor #5E35B1
+skinparam ActivityEndColor #5E35B1
+skinparam NoteBackgroundColor #FFF8E1
+skinparam NoteBorderColor #C9A227
+skinparam SwimlaneBorderColor #B39DDB
+skinparam SwimlaneTitleFontColor #4527A0
+skinparam SwimlaneTitleFontStyle bold
+title Diagrama de actividad 6 – Buscar y listar libros (CU-02, CU-12)
+
+|Administrador|
+start
+:Entra a "Buscar libro";
+:Elige criterio (Título, Categoría, Autor o ISBN);
+:Escribe el texto y pulsa "Buscar";
+|Sistema|
+if (¿Texto vacío?) then (sí)
+  :Muestra "Por favor complete los datos";
+  stop
+endif
+|Base de datos|
+switch (Criterio)
+case (Título)
+  :Busca libros por título;
+case (Categoría)
+  :Busca libros por categoría;
+case (Autor)
+  :Busca libros por autor;
+case (ISBN)
+  :Busca libros por ISBN;
+endswitch
+if (¿Hay resultados?) then (sí)
+  |Sistema|
+  :Llena la tabla con los libros;
+else (no)
+  |Sistema|
+  :Muestra "No se encontraron registros";
+endif
+stop
+@enduml

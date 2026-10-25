@@ -1,0 +1,46 @@
+@startuml
+skinparam dpi 150
+skinparam shadowing false
+skinparam defaultFontName "DejaVu Sans"
+skinparam defaultFontSize 12
+skinparam roundCorner 14
+skinparam ArrowColor #5E35B1
+skinparam ArrowFontColor #4527A0
+skinparam TitleFontSize 17
+skinparam TitleFontColor #4527A0
+skinparam ActivityBackgroundColor #EDE7F6
+skinparam ActivityBorderColor #7E57C2
+skinparam ActivityDiamondBackgroundColor #FFF3C4
+skinparam ActivityDiamondBorderColor #C9A227
+skinparam ActivityStartColor #5E35B1
+skinparam ActivityEndColor #5E35B1
+skinparam NoteBackgroundColor #FFF8E1
+skinparam NoteBorderColor #C9A227
+skinparam SwimlaneBorderColor #B39DDB
+skinparam SwimlaneTitleFontColor #4527A0
+skinparam SwimlaneTitleFontStyle bold
+title Diagrama de actividad – Devolver un libro (CU-08)
+
+|Administrador|
+start
+:Entra a "Listar libros emitidos";
+:Opcionalmente, busca por código\ndel estudiante;
+|Sistema|
+:Solicita y muestra los préstamos\nen la tabla;
+|Administrador|
+:Selecciona un préstamo y pulsa\n"Devolver";
+|Sistema|
+if (¿Hay un préstamo seleccionado?) then (no)
+  :Muestra "No hay nada seleccionado";
+else (sí)
+  |Base de datos|
+  :Borra el préstamo y suma 1\na la cantidad disponible del libro;
+  |Sistema|
+  if (¿Se actualizó correctamente?) then (sí)
+    :Muestra el mensaje de éxito\ny recarga la lista de préstamos;
+  else (no)
+    :Muestra "Ocurrió un error";
+  endif
+endif
+stop
+@enduml

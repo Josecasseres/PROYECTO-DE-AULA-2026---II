@@ -1,0 +1,53 @@
+@startuml
+skinparam dpi 150
+skinparam shadowing false
+skinparam defaultFontName "DejaVu Sans"
+skinparam defaultFontSize 12
+skinparam roundCorner 14
+skinparam ArrowColor #5E35B1
+skinparam ArrowFontColor #4527A0
+skinparam TitleFontSize 17
+skinparam TitleFontColor #4527A0
+skinparam ActivityBackgroundColor #EDE7F6
+skinparam ActivityBorderColor #7E57C2
+skinparam ActivityDiamondBackgroundColor #FFF3C4
+skinparam ActivityDiamondBorderColor #C9A227
+skinparam ActivityStartColor #5E35B1
+skinparam ActivityEndColor #5E35B1
+skinparam NoteBackgroundColor #FFF8E1
+skinparam NoteBorderColor #C9A227
+skinparam SwimlaneBorderColor #B39DDB
+skinparam SwimlaneTitleFontColor #4527A0
+skinparam SwimlaneTitleFontStyle bold
+title Diagrama de actividad – Editar libro (CU-10)
+
+|Administrador|
+start
+:Entra a "Lista todos los libros";
+:Selecciona un libro de la tabla\ny pulsa "Editar";
+|Sistema|
+if (¿Hay un libro seleccionado?) then (no)
+  :Muestra "Por favor, seleccione\nun libro de la tabla";
+else (sí)
+  |Base de datos|
+  :Consulta el correo del autor;
+  |Sistema|
+  :Muestra el formulario con los datos actuales\n(el ISBN no se puede cambiar);
+  |Administrador|
+  :Modifica los datos y pulsa\n"Aceptar" o "Cancelar";
+  |Sistema|
+  if (¿Pulsó "Aceptar"?) then (sí)
+    if (¿La cantidad es un entero\nmayor o igual a 0?) then (sí)
+      |Base de datos|
+      :Actualiza el libro y su autor;
+      |Sistema|
+      :Muestra "Libro editado correctamente"\ny recarga la tabla;
+    else (no)
+      :Muestra "La cantidad debe ser un número\nentero mayor o igual a 0";
+    endif
+  else (no)
+    :No se hace ningún cambio;
+  endif
+endif
+stop
+@enduml

@@ -1,0 +1,37 @@
+@startuml
+skinparam shadowing false
+skinparam defaultFontName "DejaVu Sans"
+skinparam ArrowColor #5E35B1
+skinparam roundCorner 14
+skinparam ActivityBackgroundColor #EDE7F6
+skinparam ActivityBorderColor #7E57C2
+skinparam ActivityDiamondBackgroundColor #FFF3C4
+skinparam ActivityDiamondBorderColor #C9A227
+skinparam ActivityStartColor #5E35B1
+skinparam ActivityEndColor #5E35B1
+skinparam SequenceLifeLineBorderColor #7E57C2
+skinparam ParticipantBackgroundColor #EDE7F6
+skinparam ParticipantBorderColor #7E57C2
+skinparam ActorBackgroundColor #EDE7F6
+skinparam DatabaseBackgroundColor #FFF3C4
+skinparam StateBackgroundColor #EDE7F6
+skinparam StateBorderColor #7E57C2
+skinparam ComponentBackgroundColor #EDE7F6
+skinparam ComponentBorderColor #7E57C2
+skinparam NodeBackgroundColor #F6F2FC
+skinparam NodeBorderColor #7E57C2
+skinparam ClassBackgroundColor #EDE7F6
+skinparam ClassBorderColor #7E57C2
+title Diagrama de despliegue
+node "Computador del usuario (Windows)" {
+  node "Máquina virtual de Java (JVM)" {
+    artifact "Biblioteca SIT.jar\n(Java Swing)" as APP
+    artifact "mysql-connector-java-5.0.8.jar" as CON
+  }
+  node "XAMPP" {
+    database "MySQL / MariaDB\nbd_biblioteca\npuerto 3306" as DB
+  }
+}
+APP ..> CON : usa
+APP --> DB : JDBC\nroot / sin contraseña
+@enduml
